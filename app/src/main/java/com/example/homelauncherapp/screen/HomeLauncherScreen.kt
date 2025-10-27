@@ -39,7 +39,7 @@ import com.example.homelauncherapp.getInstalledApps
 import com.example.homelauncherapp.launchApp
 
 @Composable
-fun HomeLauncherScreen() {
+fun HomeLauncherScreen(modifier: Modifier) {
     val context = LocalContext.current
     var drawerOffset by remember { mutableFloatStateOf(1f) }
     var installedApps by remember { mutableStateOf<List<AppInfo>>(emptyList()) }
