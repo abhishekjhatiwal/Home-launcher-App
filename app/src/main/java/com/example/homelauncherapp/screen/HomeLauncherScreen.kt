@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,12 +38,17 @@ import com.example.homelauncherapp.R
 import com.example.homelauncherapp.data.AppInfo
 import com.example.homelauncherapp.getInstalledApps
 import com.example.homelauncherapp.launchApp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun HomeLauncherScreen(modifier: Modifier) {
     val context = LocalContext.current
     var drawerOffset by remember { mutableFloatStateOf(1f) }
     var installedApps by remember { mutableStateOf<List<AppInfo>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
+    val scope = rememberCoroutineScope()
 
     val animatedOffset by animateFloatAsState(
         targetValue = drawerOffset,
@@ -50,7 +56,18 @@ fun HomeLauncherScreen(modifier: Modifier) {
     )
 
     LaunchedEffect(Unit) {
-        installedApps = getInstalledApps(context.packageManager)
+//        installedApps = getInstalledApps(context.packageManager)
+        scope.launch {
+            try {
+                installedApps = withContext(Dispatchers.IO) {
+                    getInstalledApps(context.packageManager)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                isLoading = false
+            }
+        }
     }
 
     Box(
