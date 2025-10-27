@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.homelauncherapp.getBatteryLevel
 import com.example.homelauncherapp.getCurrentTime
+import kotlinx.coroutines.delay
 
 @Composable
 fun TopBar() {
@@ -29,7 +30,7 @@ fun TopBar() {
 
     LaunchedEffect(Unit) {
         while (true) {
-            kotlinx.coroutines.delay(1000)
+            delay(1000)
             currentTime = getCurrentTime()
         }
     }
