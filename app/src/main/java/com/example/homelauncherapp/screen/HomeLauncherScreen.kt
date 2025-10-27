@@ -54,7 +54,7 @@ fun HomeLauncherScreen(modifier: Modifier) {
     }
 
     Box(
-        modifier = Modifier
+        modifier
             .fillMaxSize()
             .background(Color.Black)
             .pointerInput(Unit) {
